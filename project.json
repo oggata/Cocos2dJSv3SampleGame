@@ -3,7 +3,7 @@
 
     "debugMode" : 1,
     "showFPS" : true,
-    "frameRate" : 60,
+    "frameRate" : 30,
     "id" : "gameCanvas",
     "renderMode" : 0,
     "engineDir":"frameworks/cocos2d-html5",
@@ -12,6 +12,10 @@
 
     "jsList" : [
         "src/resource.js",
-        "src/app.js"
+        "src/Layer/GameLayer.js",
+        "src/Layer/StageLayer.js",
+        "src/Layer/TopLayer.js",
+        "src/Util/ButtonSprite.js",
+        "src/Sprite/Player.js"
     ]
 }
