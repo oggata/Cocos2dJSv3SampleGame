@@ -24,7 +24,7 @@ var TopLayer = cc.Layer.extend({
 
     goToStageLayer:function () {
         cc.LoaderScene.preload(g_resources, function () {
-            cc.director.runScene(new cc.TransitionTurnOffTiles(1.2,new StageLayerScene()));
+            cc.director.runScene(new cc.TransitionFade(1.2,new StageLayerScene()));
         }, this);
     }
 });

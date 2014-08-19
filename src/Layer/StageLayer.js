@@ -45,7 +45,7 @@ var StageLayer = cc.Layer.extend({
 
     goToGameLayer:function () {
         cc.LoaderScene.preload(g_resources, function () {
-            cc.director.runScene(new cc.TransitionTurnOffTiles(1.2,new GameLayerScene()));
+            cc.director.runScene(new cc.TransitionFade(1.2,new GameLayerScene()));
         }, this);
     }
 });
