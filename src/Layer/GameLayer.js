@@ -1,12 +1,13 @@
 
 var GameLayer = cc.Layer.extend({
     sprite:null,
+
     ctor:function () {
         this._super();
-        var size = cc.winSize;
-
         this.mapNode = cc.Node.create();
         this.addChild(this.mapNode);
+
+        this.gameTime = 0;
 
         var fieldSprite = new cc.Sprite("res/ui/field.jpg");
         fieldSprite.setAnchorPoint(0,0);
@@ -18,12 +19,13 @@ var GameLayer = cc.Layer.extend({
         this.player = new Player(this);
         this.mapNode.addChild(this.player);
 
+        this.enemies          = [];
+
         //initialize camera
-        self.touchStartPoint = {x:0,y:0}
+        this.cameraX = Math.floor(320/2 - this.player.getPosition().x);
+        this.cameraY = Math.floor(480/2 - this.player.getPosition().y);
         this.playerCameraX = 320/2;
         this.playerCameraY = 420/2;
-        this.cameraX = this.playerCameraX - this.player.getPosition().x;
-        this.cameraY = this.playerCameraY - this.player.getPosition().y;
         this.mapNode.setPosition(
             this.cameraX,
             this.cameraY
@@ -33,21 +35,15 @@ var GameLayer = cc.Layer.extend({
             cc.eventManager.addListener(cc.EventListener.create({
                 event: cc.EventListener.TOUCH_ALL_AT_ONCE,
                 onTouchesBegan : function(touches, event){
-                    cc.log("xxxx");
-                    var touch = touches[0];
-                    var loc = touch.getLocation();
-                    self.touchStartPoint = {
-                        x:loc.x,
-                        y:loc.y
-                    }
-                    //event.targetMarker.setPosition(tPosX,tPosY);
-                    //this.targetMarker.setPosition(cc.p(tPosX,tPosY));
+                    event.getCurrentTarget().targetMarker.setPosition(
+                        touches[0].getLocation().x - event.getCurrentTarget().cameraX,
+                        touches[0].getLocation().y - event.getCurrentTarget().cameraY
+                    );
                 },
                 onTouchesMoved : function(touches, event){},
                 onTouchesEnded:function (touches, event) {
                     if (touches.length <= 0)
                         return;
-                    //event.getCurrentTarget().moveSprite(touches[0].getLocation());
                 }
             }), this);
         //else if ('mouse' in cc.sys.capabilities )
@@ -63,13 +59,27 @@ var GameLayer = cc.Layer.extend({
         return true;
     },
 
+    addEnemyByPos : function(posX,posY){
+        this.enemy = new Enemy(this);
+        this.enemy.setPosition(posX,posY);
+        this.mapNode.addChild(this.enemy);
+        this.enemies.push(this.enemy);
+    },
+
     update:function(dt){
-        if(self.touchStartPoint){
-            cc.log(self.touchStartPoint.x);
-            var tPosX = (self.touchStartPoint.x - this.cameraX);
-            var tPosY = (self.touchStartPoint.y - this.cameraY);
-            this.targetMarker.setPosition(cc.p(tPosX,tPosY));
+        this.gameTime++;
+        if(this.gameTime>=30){
+            this.gameTime = 0;
+            this.addEnemyByPos(
+                getRandNumberFromRange(0,1000),
+                getRandNumberFromRange(0,1000)
+            );
         }
+
+        for(var i=0;i<this.enemies.length;i++){
+            this.enemies[i].update();
+         }
+
         this.player.moveToTargetMarker(this.targetMarker);
         this.player.setDirection(this.targetMarker);
         this.moveCamera();
@@ -103,6 +113,11 @@ var GameLayer = cc.Layer.extend({
         );
     },
 });
+
+var getRandNumberFromRange = function (min,max) {
+    var rand = min + Math.floor( Math.random() * (max - min));
+    return rand;
+};
 
 var GameLayerScene = cc.Scene.extend({
     onEnter:function () {

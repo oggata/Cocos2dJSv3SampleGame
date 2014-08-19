@@ -16,6 +16,7 @@
         "src/Layer/StageLayer.js",
         "src/Layer/TopLayer.js",
         "src/Util/ButtonSprite.js",
-        "src/Sprite/Player.js"
+        "src/Sprite/Player.js",
+        "src/Sprite/Enemy.js"
     ]
 }
