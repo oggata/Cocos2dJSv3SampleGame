@@ -45,7 +45,7 @@ var Enemy = cc.Node.extend({
     },
 
     update:function() {
-        this.move();
+        //this.move();
 
         //方向制御
         this.directionCnt++;
