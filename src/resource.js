@@ -7,7 +7,9 @@ var res = {
     s_shadow          : "res/sprite/shadow.png",
     s_target_marker   : "res/sprite/targetMarker.png",
     s_field   : "res/ui/field.jpg",
-    Loading_png : "res/loading.png"
+    Loading_png : "res/loading.png",
+    Safe_png : "res/ui/safe.png",
+    Marker_png : "res/ui/marker.png"
 };
 
 var g_resources = [];

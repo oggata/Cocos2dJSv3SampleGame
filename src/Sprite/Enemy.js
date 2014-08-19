@@ -28,24 +28,44 @@ var Enemy = cc.Node.extend({
         this.beforeY         = this.getPosition().y;
         this.directionCnt    = 0;
         this.moveX           = 1;
+        this.mapX            = 0;
+        this.mapY            = 0;
+    },
+
+    setPos:function(mapX,mapY){
+        this.mapX            = mapX;
+        this.mapY            = mapY;
+        //this.setPosition(mapX,mapY);
     },
 
     move:function(){
+        /*
         if(this.getPosition().x > 1000){
             this.moveX = -1;
         }
         if(this.getPosition().x < 0){
             this.moveX = 1;
-        }
+        }*/
 
+        if(this.mapX > 1000) this.moveX = -1;
+        if(this.mapX < 0) this.moveX = 1;
+        this.mapX += this.moveX;
+        /*
         this.setPosition(
             this.getPosition().x + this.moveX,
             this.getPosition().y
-        );
+        );*/
+        
+        if(this.game.isCameraRange(this.mapX,this.mapY)){
+            this.setVisible(true);
+            this.setPosition(this.mapX,this.mapY);
+        }else{
+            this.setVisible(false);
+        }
     },
 
     update:function() {
-        //this.move();
+        this.move();
 
         //方向制御
         this.directionCnt++;

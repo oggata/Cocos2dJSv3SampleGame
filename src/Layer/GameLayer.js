@@ -55,18 +55,55 @@ var GameLayer = cc.Layer.extend({
                 }
             }, this);
         */
+
+        //Safe_png
+        this.safeSprite = new cc.Sprite(res.Safe_png);
+        this.safeSprite.setAnchorPoint(0,0);
+        this.mapNode.addChild(this.safeSprite);
+
+        this.safeMarker001Sprite = new cc.Sprite(res.Marker_png);
+        this.mapNode.addChild(this.safeMarker001Sprite);
+
+        this.safeMarker002Sprite = new cc.Sprite(res.Marker_png);
+        this.mapNode.addChild(this.safeMarker002Sprite);
+
+        this.safeMarker003Sprite = new cc.Sprite(res.Marker_png);
+        this.mapNode.addChild(this.safeMarker003Sprite);
+
+        this.safeMarker004Sprite = new cc.Sprite(res.Marker_png);
+        this.mapNode.addChild(this.safeMarker004Sprite);
+
         this.scheduleUpdate();
         return true;
     },
 
     addEnemyByPos : function(posX,posY){
         this.enemy = new Enemy(this);
-        this.enemy.setPosition(posX,posY);
+        this.enemy.setPos(posX,posY);
         this.mapNode.addChild(this.enemy);
         this.enemies.push(this.enemy);
     },
 
+    isCameraRange:function(posX,posY){
+        if(this.cameraX * -1 + 60 < posX && posX < this.cameraX * -1 + 260
+            && this.cameraY * -1 + 90 < posY && posY < this.cameraY * -1 + 390
+        ){
+            return true;
+        }
+        return false;
+    },
+
     update:function(dt){
+        this.safeSprite.setPosition(this.cameraX * -1,this.cameraY * -1);
+        //左上
+        this.safeMarker001Sprite.setPosition(this.cameraX * -1 + 60, this.cameraY * -1 + 390);
+        //右上
+        this.safeMarker002Sprite.setPosition(this.cameraX * -1 + 260,this.cameraY * -1 + 390);
+        //左下
+        this.safeMarker003Sprite.setPosition(this.cameraX * -1 + 60, this.cameraY * -1 + 90);
+        //右下
+        this.safeMarker004Sprite.setPosition(this.cameraX * -1 + 260,this.cameraY * -1 + 90);
+
         this.gameTime++;
         if(this.gameTime>=30){
             this.gameTime = 0;
@@ -86,6 +123,7 @@ var GameLayer = cc.Layer.extend({
     },
 
     moveCamera:function(){
+//cc.log(this.cameraX + "|" + this.cameraY);
         //カメラ位置はプレイヤーを追いかける
         this.playerCameraX = this.player.getPosition().x + this.cameraX;
         this.playerCameraY = this.player.getPosition().y + this.cameraY;
