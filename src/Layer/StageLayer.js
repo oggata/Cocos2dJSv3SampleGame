@@ -15,27 +15,27 @@ var StageLayer = cc.Layer.extend({
         this.rectBase.setPosition(0,0);
         this.addChild(this.rectBase);
 
-        this.stage001Button = new ButtonSprite("Stage001",15,cc.color(255,255,0),this.goToGameLayer,this);
+        this.stage001Button = new ButtonSprite("ViewPortClippingON",15,cc.color(255,255,0),this.goToGameLayer001,this);
         this.stage001Button.setAnchorPoint(0,0);
         this.stage001Button.setPosition(100,300-50*0);
         this.addChild(this.stage001Button);
 
-        this.stage002Button = new ButtonSprite("Stage002",15,cc.color(255,255,0),this.goToGameLayer,this);
+        this.stage002Button = new ButtonSprite("ViewPortClippingOFF",15,cc.color(255,255,0),this.goToGameLayer002,this);
         this.stage002Button.setAnchorPoint(0,0);
         this.stage002Button.setPosition(100,300-50*1);
         this.addChild(this.stage002Button);
 
-        this.stage003Button = new ButtonSprite("Stage003",15,cc.color(255,255,0),this.goToGameLayer,this);
+        this.stage003Button = new ButtonSprite("Stage003",15,cc.color(255,255,0),this.goToGameLayer001,this);
         this.stage003Button.setAnchorPoint(0,0);
         this.stage003Button.setPosition(100,300-50*2);
         this.addChild(this.stage003Button);
 
-        this.stage004Button = new ButtonSprite("Stage004",15,cc.color(255,255,0),this.goToGameLayer,this);
+        this.stage004Button = new ButtonSprite("Stage004",15,cc.color(255,255,0),this.goToGameLayer001,this);
         this.stage004Button.setAnchorPoint(0,0);
         this.stage004Button.setPosition(100,300-50*3);
         this.addChild(this.stage004Button);
 
-        this.stage005Button = new ButtonSprite("Stage005",15,cc.color(255,255,0),this.goToGameLayer,this);
+        this.stage005Button = new ButtonSprite("Stage005",15,cc.color(255,255,0),this.goToGameLayer001,this);
         this.stage005Button.setAnchorPoint(0,0);
         this.stage005Button.setPosition(100,300-50*4);
         this.addChild(this.stage005Button);
@@ -45,7 +45,19 @@ var StageLayer = cc.Layer.extend({
 
     goToGameLayer:function () {
         cc.LoaderScene.preload(g_resources, function () {
-            cc.director.runScene(new cc.TransitionFade(1.2,new GameLayerScene()));
+            cc.director.runScene(new cc.TransitionFade(1.2,new GameLayerScene001()));
+        }, this);
+    },
+
+    goToGameLayer001:function () {
+        cc.LoaderScene.preload(g_resources, function () {
+            cc.director.runScene(new cc.TransitionFade(1.2,new GameLayerScene001()));
+        }, this);
+    },
+
+    goToGameLayer002:function () {
+        cc.LoaderScene.preload(g_resources, function () {
+            cc.director.runScene(new cc.TransitionFade(1.2,new GameLayerScene002()));
         }, this);
     }
 });

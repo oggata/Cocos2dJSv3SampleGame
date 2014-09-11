@@ -2,7 +2,9 @@
 var GameLayer = cc.Layer.extend({
     sprite:null,
 
-    ctor:function () {
+    ctor:function (stageNum) {
+cc.log(stageNum);
+this.stageNum = stageNum;
         this._super();
         this.mapNode = cc.Node.create();
         this.addChild(this.mapNode);
@@ -73,6 +75,15 @@ var GameLayer = cc.Layer.extend({
         this.safeMarker004Sprite = new cc.Sprite(res.Marker_png);
         this.mapNode.addChild(this.safeMarker004Sprite);
 
+
+
+        this._label = cc.LabelTTF.create("aaaaaaaaa","Arial",20);
+        this._label.setPosition(100,400);
+        this.addChild(this._label);
+        //_label.setFontFillColor(cc.c4b(255,255,255,255));  
+        //_label.setAnchorPoint(0.5,0);
+        //_label.enableStroke(cc.c4b(0,0,0,255),1,false);
+
         this.scheduleUpdate();
         return true;
     },
@@ -85,15 +96,27 @@ var GameLayer = cc.Layer.extend({
     },
 
     isCameraRange:function(posX,posY){
+        //2面はビューポートクリッピングがOFFだから常にtrueを返して、スプライトの表示を行う
+        if(this.stageNum == 2) return true;
+
+        if(this.cameraX * -1  < posX && posX < this.cameraX * -1 + 320
+            && this.cameraY * -1  < posY && posY < this.cameraY * -1 + 480
+        ){
+            return true;
+        }
+        /*
         if(this.cameraX * -1 + 60 < posX && posX < this.cameraX * -1 + 260
             && this.cameraY * -1 + 90 < posY && posY < this.cameraY * -1 + 390
         ){
             return true;
-        }
+        }*/
         return false;
     },
 
     update:function(dt){
+
+        this._label.setString("enemy×" + this.enemies.length + "");
+
         this.safeSprite.setPosition(this.cameraX * -1,this.cameraY * -1);
         //左上
         this.safeMarker001Sprite.setPosition(this.cameraX * -1 + 60, this.cameraY * -1 + 390);
@@ -157,10 +180,18 @@ var getRandNumberFromRange = function (min,max) {
     return rand;
 };
 
-var GameLayerScene = cc.Scene.extend({
+var GameLayerScene001 = cc.Scene.extend({
     onEnter:function () {
         this._super();
-        var layer = new GameLayer();
+        var layer = new GameLayer(1);
+        this.addChild(layer);
+    }
+});
+
+var GameLayerScene002 = cc.Scene.extend({
+    onEnter:function () {
+        this._super();
+        var layer = new GameLayer(2);
         this.addChild(layer);
     }
 });
